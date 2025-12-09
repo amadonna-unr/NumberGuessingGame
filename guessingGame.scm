@@ -34,7 +34,7 @@
           (set! seed (car new-seed))
           (set! seed (modulo (+ (* seed a) c) m)))
       (/ seed m))))
-(display "Computer has chosen a number! It's your turn to guess!") 
+(display "Computer chose a number! It's your turn to guess!") 
 (newline)
 (guessingGame (+ 1 (modulo (floor (* (my-random) 10)) 10)))
 

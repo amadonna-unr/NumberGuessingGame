@@ -23,17 +23,18 @@
 ; Source - https://stackoverflow.com/a
 ; Posted by user448810, modified by community. See post 'Timeline' for change history
 ; Retrieved 2025-12-08, License - CC BY-SA 3.0
+; Changed for Guile gettimeofday for seeding
 
-(define random
-  (let ((a 69069) (c 1) (m (expt 2 32)) (seed (sys-time))) ;;(sys-time) will always make answer 8, trying to find a new seeding method
+(define my-random
+  (let ((a 69069) (c 1) (m (expt 2 32))
+      ;; combine seconds and microseconds to give higher-resolution seed
+      (seed (let ((tv (gettimeofday))) (+ (* (car tv) 1000000) (cdr tv)))))
     (lambda new-seed
       (if (pair? new-seed)
           (set! seed (car new-seed))
           (set! seed (modulo (+ (* seed a) c) m)))
       (/ seed m))))
-
-
-
 (display "Computer has chosen a number! It's your turn to guess!") 
 (newline)
-(guessingGame (+ 1 (modulo (floor (* (random) 10)) 10)))
+(guessingGame (+ 1 (modulo (floor (* (my-random) 10)) 10)))
+
